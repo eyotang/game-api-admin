@@ -16,8 +16,8 @@ import (
 //@param: file model.ExaFileUploadAndDownload
 //@return: error
 
-func Upload(file model.ExaFileUploadAndDownload) error {
-	return global.GVA_DB.Create(&file).Error
+func Upload(file *model.ExaFileUploadAndDownload) error {
+	return global.GVA_DB.Create(file).Error
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -85,7 +85,7 @@ func UploadFile(header *multipart.FileHeader, noSave string) (err error, file mo
 			Tag:  s[len(s)-1],
 			Key:  key,
 		}
-		return Upload(f), f
+		return Upload(&f), f
 	}
 	return
 }

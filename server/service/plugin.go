@@ -4,6 +4,9 @@ import (
 	"github.com/eyotang/game-proxy/server/global"
 	"github.com/eyotang/game-proxy/server/model"
 	"github.com/eyotang/game-proxy/server/model/request"
+	"github.com/eyotang/game-proxy/server/utils/upload"
+	"mime/multipart"
+	"strings"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -35,7 +38,7 @@ func DeleteProductPlugin(productPlugin model.ProductPlugin) (err error) {
 //@return: err error
 
 func DeleteProductPluginByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.ProductPlugin{},"id in ?",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.ProductPlugin{}, "id in ?", ids.Ids).Error
 	return err
 }
 
@@ -70,11 +73,36 @@ func GetProductPlugin(id uint) (err error, productPlugin model.ProductPlugin) {
 func GetProductPluginInfoList(info request.ProductPluginSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&model.ProductPlugin{})
-    var productPlugins []model.ProductPlugin
-    // 如果有条件搜索 下方会自动创建搜索语句
+	var productPlugins []model.ProductPlugin
+	// 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&productPlugins).Error
 	return err, productPlugins, total
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: UploadFile
+//@description: 根据配置文件判断是文件上传到本地或者七牛云
+//@param: header *multipart.FileHeader, noSave string
+//@return: err error, file model.ExaFileUploadAndDownload
+
+func UploadPlugin(header *multipart.FileHeader, noSave string) (err error, file model.ExaFileUploadAndDownload) {
+	oss := upload.NewGamePlugin()
+	filePath, key, uploadErr := oss.UploadFile(header)
+	if uploadErr != nil {
+		panic(err)
+	}
+	if noSave == "0" {
+		s := strings.Split(header.Filename, ".")
+		f := model.ExaFileUploadAndDownload{
+			Url:  filePath,
+			Name: header.Filename,
+			Tag:  s[len(s)-1],
+			Key:  key,
+		}
+		return Upload(&f), f
+	}
+	return
 }

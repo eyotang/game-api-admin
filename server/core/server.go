@@ -22,8 +22,8 @@ func RunServer() {
 	}
 
 	// 功能面
-	fcRouter := initialize.FuncRouters()
-	fcAddr := fmt.Sprintf(":%d", global.GVA_CONFIG.System.FuncAddr)
+	fcRouter := initialize.AppRouters()
+	fcAddr := fmt.Sprintf(":%d", global.GVA_CONFIG.System.AppAddr)
 	fs := initServer(fcAddr, fcRouter)
 	binding.EnableDecoderUseNumber = true
 	time.Sleep(10 * time.Microsecond)

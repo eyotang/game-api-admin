@@ -27,8 +27,8 @@ func Routers() *gin.Engine {
 	// 方便统一添加路由组前缀 多服务器上线使用
 	PublicGroup := Router.Group("")
 	{
-		router.InitBaseRouter(PublicGroup)      // 注册基础功能路由 不做鉴权
-		router.InitInitRouter(PublicGroup)      // 自动初始化相关
+		router.InitBaseRouter(PublicGroup) // 注册基础功能路由 不做鉴权
+		router.InitInitRouter(PublicGroup) // 自动初始化相关
 	}
 	PrivateGroup := Router.Group("")
 	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
@@ -58,7 +58,7 @@ func Routers() *gin.Engine {
 	return Router
 }
 
-func FuncRouters() *gin.Engine {
+func AppRouters() *gin.Engine {
 	var Router = gin.Default()
 	PublicGroup := Router.Group("")
 	{
