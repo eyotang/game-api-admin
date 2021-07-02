@@ -38,9 +38,9 @@
     
     <el-table-column label="产品名称" prop="productName" width="120"></el-table-column> 
     
-    <el-table-column label="插件路径" prop="pluginPath" width="360"></el-table-column> 
+    <el-table-column label="插件路径" prop="pluginPath"></el-table-column> 
     
-      <el-table-column label="按钮组">
+      <el-table-column label="按钮组" width="180">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updateProductPlugin(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>

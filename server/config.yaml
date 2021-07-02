@@ -40,6 +40,12 @@ email:
   nickname: test
 excel:
   dir: ./resource/excel/
+game-plugin:
+  base: /data/app/game-proxy
+  path: bin/plugins
+gameplugin:
+  base: /data/app/game-proxy
+  path: bin/plugins
 jwt:
   signing-key: qmPlus
   expires-time: 604800
@@ -99,13 +105,10 @@ timer:
 zap:
   level: info
   format: console
-  prefix: '[GAME-API-ADMIN]'
+  prefix: '[Game-Proxy]'
   director: log
   link-name: latest_log
   showLine: false
   encode-level: LowercaseColorLevelEncoder
   stacktrace-key: stacktrace
   log-in-console: true
-game-plugin:
-  base: /data/app/game-proxy
-  path: bin/plugins
